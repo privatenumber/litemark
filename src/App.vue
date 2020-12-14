@@ -17,14 +17,11 @@
 				</label>
 
 				<div v-if="state.useGithubApi">
-					<input
+					<token-input
 						v-model="state.githubToken"
 						class="token-input"
-						:type="tokenFocused ? 'text' : 'password'"
 						placeholder="GitHub token"
-						@focus="tokenFocused = true"
-						@blur="tokenFocused = false"
-					>
+					/>
 
 					{{ Number(rateLimit.remaining).toLocaleString() }}/{{ Number(rateLimit.limit).toLocaleString() }}
 				</div>
@@ -56,6 +53,7 @@ import LRU from 'https://cdn.skypack.dev/pin/lru-cache@v6.0.0-IF3dXOIuVvZ6NoDdLu
 import marked from 'https://cdn.skypack.dev/pin/marked@v1.2.6-VhC1uUH1mBVSJfkyxYzD/min/marked.js';
 import MonacoEditor from './components/MonacoEditor.vue';
 import Spinner from './components/Spinner.vue';
+import TokenInput from './components/TokenInput.vue';
 
 const cache = new LRU({
 	max: 1000,
@@ -88,12 +86,12 @@ export default {
 	components: {
 		MonacoEditor,
 		Spinner,
+		TokenInput,
 	},
 
 	data() {
 		return {
 			isLoading: false,
-			tokenFocused: false,
 			rateLimit: {
 				remaining: 0,
 				limit: 0,

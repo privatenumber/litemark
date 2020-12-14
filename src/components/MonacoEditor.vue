@@ -50,10 +50,14 @@ export default {
 			const editor = monaco.editor.create(this.$refs.monacoRef, {
 				value: this.modelValue,
 				language: this.language,
+				theme: this.theme,
 				automaticLayout: true,
 				wordWrap: true,
 				quickSuggestions: false,
-				theme: this.theme,
+			});
+
+			editor.updateOptions({
+				tabSize: 4,
 			});
 
 			editor.onDidChangeModelContent(() => {

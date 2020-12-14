@@ -1,0 +1,26 @@
+{
+  "name": "litemark",
+  "private": true,
+  "description": "GitHub Flavored Markdown Editor",
+  "license": "MIT",
+  "repository": "privatenumber/litemark",
+  "funding": "https://github.com/privatenumber/litemark?sponsor=1",
+  "author": {
+    "name": "Hiroki Osame",
+    "email": "hiroki.osame@gmail.com"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "xo"
+  },
+  "dependencies": {
+    "vue": "^3.0.4"
+  },
+  "devDependencies": {
+    "@vue/compiler-sfc": "^3.0.4",
+    "eslint-plugin-vue": "^7.2.0",
+    "vite": "^1.0.0-rc.13",
+    "xo": "^0.36.1"
+  }
+}

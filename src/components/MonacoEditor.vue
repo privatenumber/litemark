@@ -73,7 +73,7 @@ export default {
 				range = editor.getSelection();
 			} else {
 				const line = editor.getModel().getLineCount() + 1;
-				const column = 1
+				const column = 1;
 				range = new monaco.Range(line, column, line, column);
 			}
 

@@ -133,7 +133,7 @@ export default {
 				this.isLoading = true;
 				markdownCompiledHtml = this.state.useGithubApi ?
 					(await this.getGithubMarkdown(markdownSrc)) :
-					(await marked(markdownSrc, { gfm: true }));
+					(await marked(markdownSrc, {gfm: true}));
 				this.isLoading = false;
 
 				cache.set(cacheKey, markdownCompiledHtml);

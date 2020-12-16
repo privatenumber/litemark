@@ -14,19 +14,19 @@
 
 <script>
 export default {
+	emits: ['drop-file'],
 	methods: {
 		onDrop(ev) {
 			ev.preventDefault();
 
 			if (ev.dataTransfer.items) {
-				for (let item of ev.dataTransfer.items) {
+				for (const item of ev.dataTransfer.items) {
 					const file = item.getAsFile();
 					this.$emit('drop-file', file);
 				}
 			} else {
 				console.log(ev.dataTransfer.files);
 			}
-
 		},
 	},
 };

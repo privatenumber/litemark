@@ -49,7 +49,7 @@
 			/>
 			<iframe
 				ref="previewFrame"
-				srcdoc="<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/4.0.0/github-markdown.min.css'><style>.markdown-body{ padding: 32px }</style><div class='markdown-body'></div>"
+				srcdoc="<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/4.0.0/github-markdown.min.css'><link rel='stylesheet' href='https://unpkg.com/highlight.js@10.4.1/styles/github-gist.css'><style>.markdown-body{ padding: 32px }</style><div class='markdown-body'></div>"
 				@load.once="renderMarkdown"
 			/>
 		</div>
@@ -60,7 +60,7 @@
 import pDebounce from 'https://cdn.skypack.dev/pin/p-debounce@v2.1.0-LRRtmDORx9LZe70mcYjZ/min/p-debounce.js';
 import ky from 'https://cdn.skypack.dev/pin/ky@v0.25.1-Vz6hQ384evEQfuYrbaQy/min/ky.js';
 import LRU from 'https://cdn.skypack.dev/pin/lru-cache@v6.0.0-IF3dXOIuVvZ6NoDdLuhR/min/lru-cache.js';
-import marked from 'https://cdn.skypack.dev/pin/marked@v1.2.6-VhC1uUH1mBVSJfkyxYzD/min/marked.js';
+import marked from './lib/marked.js';
 import MonacoEditor from './components/MonacoEditor.vue';
 import Spinner from './components/Spinner.vue';
 import TokenInput from './components/TokenInput.vue';
@@ -68,29 +68,6 @@ import UploadDropZone from './components/UploadDropZone.vue';
 
 const cache = new LRU({
 	max: 1000,
-});
-
-marked.use({
-	renderer: {
-		heading(text, level) {
-			const escapedText = text.toLowerCase().replace(/\W+/g, '-');
-			return `
-			<h${level}>
-				<a
-					id="${escapedText}"
-					class="anchor"
-					href="#${escapedText}"
-				>
-					<span
-						aria-hidden="true"
-						class="octicon octicon-link"
-					></span>
-				</a>
-				${text}
-			</h${level}>
-			`;
-		},
-	},
 });
 
 export default {
@@ -153,9 +130,12 @@ export default {
 
 			let markdownCompiledHtml = cache.get(cacheKey);
 			if (!markdownCompiledHtml) {
-				markdownCompiledHtml = this.state.useGithubApi ? (await this.getGithubMarkdown(markdownSrc)) : marked(markdownSrc, {
-					gfm: true,
-				});
+				this.isLoading = true;
+				markdownCompiledHtml = this.state.useGithubApi ?
+					(await this.getGithubMarkdown(markdownSrc)) :
+					(await marked(markdownSrc, { gfm: true }));
+				this.isLoading = false;
+
 				cache.set(cacheKey, markdownCompiledHtml);
 			}
 
@@ -167,7 +147,6 @@ export default {
 		},
 
 		async getGithubMarkdown(text) {
-			this.isLoading = true;
 			let response;
 			try {
 				response = await ky.post('https://api.github.com/markdown', {
@@ -187,8 +166,6 @@ export default {
 			} catch (error) {
 				console.log(error);
 				return `Failed with error: ${error.message}`;
-			} finally {
-				this.isLoading = false;
 			}
 		},
 	},

@@ -1,6 +1,15 @@
 <template>
 	<div class="app">
-		<div class="editor">
+		<div
+			class="editor"
+			@dragenter="isDragging = true"
+		>
+			<upload-drop-zone
+				v-if="isDragging"
+				@dragleave="isDragging = false"
+				@drop-file="onDropFile"
+			/>
+
 			<div class="settings">
 				<label>
 					<input
@@ -27,6 +36,7 @@
 				</div>
 			</div>
 			<monaco-editor
+				ref="monaco"
 				v-model="state.markdownSrc"
 				language="markdown"
 				theme="vs-dark"
@@ -54,6 +64,7 @@ import marked from 'https://cdn.skypack.dev/pin/marked@v1.2.6-VhC1uUH1mBVSJfkyxY
 import MonacoEditor from './components/MonacoEditor.vue';
 import Spinner from './components/Spinner.vue';
 import TokenInput from './components/TokenInput.vue';
+import UploadDropZone from './components/UploadDropZone.vue';
 
 const cache = new LRU({
 	max: 1000,
@@ -87,10 +98,12 @@ export default {
 		MonacoEditor,
 		Spinner,
 		TokenInput,
+		UploadDropZone,
 	},
 
 	data() {
 		return {
+			isDragging: false,
 			isLoading: false,
 			rateLimit: {
 				remaining: 0,
@@ -126,6 +139,14 @@ export default {
 	},
 
 	methods: {
+		onDropFile(file) {
+			this.isDragging = false;
+
+			if (file.type.startsWith('image')) {
+				this.$refs.monaco.insertToCaret(`<img src="${URL.createObjectURL(file)}" alt="${file.name}">`);
+			}
+		},
+
 		async renderMarkdown() {
 			const markdownSrc = this.state.markdownSrc.trim();
 			const cacheKey = this.cachePrefix + markdownSrc;
@@ -194,6 +215,7 @@ a {
 }
 
 .editor {
+	position: relative;
 	width: 50vw;
 	display: flex;
 	flex-direction: column;

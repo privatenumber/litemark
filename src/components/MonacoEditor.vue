@@ -47,7 +47,7 @@ export default {
 
 	methods: {
 		initMonaco() {
-			const editor = monaco.editor.create(this.$refs.monacoRef, {
+			this.editor = monaco.editor.create(this.$refs.monacoRef, {
 				value: this.modelValue,
 				language: this.language,
 				theme: this.theme,
@@ -56,13 +56,32 @@ export default {
 				quickSuggestions: false,
 			});
 
-			editor.updateOptions({
+			this.editor.updateOptions({
 				tabSize: 4,
 			});
 
-			editor.onDidChangeModelContent(() => {
-				this.$emit('update:modelValue', editor.getValue());
+			this.editor.onDidChangeModelContent(() => {
+				this.$emit('update:modelValue', this.editor.getValue());
 			});
+		},
+
+		insertToCaret(text) {
+			const {editor} = this;
+
+			let range;
+			if (editor.hasTextFocus()) {
+				range = editor.getSelection();
+			} else {
+				const line = editor.getModel().getLineCount() + 1;
+				const column = 1
+				range = new monaco.Range(line, column, line, column);
+			}
+
+			editor.executeEdits('', [{
+				range,
+				text,
+				forceMoveMarkers: true,
+			}]);
 		},
 	},
 };

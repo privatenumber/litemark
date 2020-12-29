@@ -6,6 +6,7 @@ devDependencies:
   husky: 4.3.6
   lint-staged: 10.5.3
   vite: 1.0.0-rc.13
+  vue-split-view: github.com/privatenumber/vue-split-view/a2e7d8c82e15d3205eda0256dbfbce7796b50224_vue@3.0.4
   xo: 0.36.1
 lockfileVersion: 5.2
 packages:
@@ -6159,6 +6160,17 @@ packages:
       node: '>=10'
     resolution:
       integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
+  github.com/privatenumber/vue-split-view/a2e7d8c82e15d3205eda0256dbfbce7796b50224_vue@3.0.4:
+    dependencies:
+      vue: 3.0.4
+    dev: true
+    id: github.com/privatenumber/vue-split-view/a2e7d8c82e15d3205eda0256dbfbce7796b50224
+    name: vue-split-view
+    peerDependencies:
+      vue: ^3.0.0
+    resolution:
+      tarball: 'https://codeload.github.com/privatenumber/vue-split-view/tar.gz/a2e7d8c82e15d3205eda0256dbfbce7796b50224'
+    version: 0.1.0
 specifiers:
   '@vue/compiler-sfc': ^3.0.4
   eslint-plugin-vue: ^7.2.0
@@ -6166,4 +6178,5 @@ specifiers:
   lint-staged: ^10.5.3
   vite: ^1.0.0-rc.13
   vue: ^3.0.4
+  vue-split-view: 'github:privatenumber/vue-split-view#built'
   xo: ^0.36.1

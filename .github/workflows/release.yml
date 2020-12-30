@@ -16,13 +16,19 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 14.x
-      - name: Deploy
+      - name: Install dependencies
         run: |
           npm i -g pnpm
           pnpm i --frozen-lockfile
+      - name: Build
+        run: |
           npm run build
+      - name: Deploy
+        run: |
           cd dist
           git init
+          git config user.name github-actions
+          git config user.email github-actions@github.com
           git add -A
           git commit -m 'chore: deploy'
           git push -f git@github.com:privatenumber/litemark.git master:gh-pages

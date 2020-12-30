@@ -1,59 +1,63 @@
 <template>
-	<div class="app">
-		<div
-			class="editor"
-			@dragenter="isDragging = true"
-		>
-			<upload-drop-zone
-				v-if="isDragging"
-				@dragleave="isDragging = false"
-				@drop-file="onDropFile"
-			/>
+	<split-view>
+		<template #A>
+			<div
+				class="editor"
+				@dragenter="isDragging = true"
+			>
+				<upload-drop-zone
+					v-if="isDragging"
+					@dragleave="isDragging = false"
+					@drop-file="onDropFile"
+				/>
 
-			<div class="settings">
-				<label>
-					<input
-						v-model="state.useGithubApi"
-						type="checkbox"
-					>
-					Use GitHub API
-					<a
-						href="https://developer.github.com/v3/markdown/"
-						target="_blank"
-					>
-						[?]
-					</a>
-				</label>
+				<div class="settings">
+					<label>
+						<input
+							v-model="state.useGithubApi"
+							type="checkbox"
+						>
+						Use GitHub API
+						<a
+							href="https://developer.github.com/v3/markdown/"
+							target="_blank"
+						>
+							[?]
+						</a>
+					</label>
 
-				<div v-if="state.useGithubApi">
-					<token-input
-						v-model="state.githubToken"
-						class="token-input"
-						placeholder="GitHub token"
-					/>
+					<div v-if="state.useGithubApi">
+						<token-input
+							v-model="state.githubToken"
+							class="token-input"
+							placeholder="GitHub token"
+						/>
 
-					{{ Number(rateLimit.remaining).toLocaleString() }}/{{ Number(rateLimit.limit).toLocaleString() }}
+						{{ Number(rateLimit.remaining).toLocaleString() }}/{{ Number(rateLimit.limit).toLocaleString() }}
+					</div>
 				</div>
+				<monaco-editor
+					ref="monaco"
+					v-model="state.markdownSrc"
+					language="markdown"
+					theme="vs-dark"
+				/>
 			</div>
-			<monaco-editor
-				ref="monaco"
-				v-model="state.markdownSrc"
-				language="markdown"
-				theme="vs-dark"
-			/>
-		</div>
-		<div class="preview">
-			<spinner
-				v-if="isLoading"
-				class="spinner-container"
-			/>
-			<iframe
-				ref="previewFrame"
-				srcdoc="<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/4.0.0/github-markdown.min.css'><link rel='stylesheet' href='https://unpkg.com/highlight.js@10.4.1/styles/github-gist.css'><style>.markdown-body{ padding: 32px }</style><div class='markdown-body'></div>"
-				@load.once="renderMarkdown"
-			/>
-		</div>
-	</div>
+		</template>
+		<template #B>
+			<div class="preview">
+				<spinner
+					v-if="isLoading"
+					class="spinner-container"
+				/>
+				<iframe
+					ref="previewFrame"
+					srcdoc="<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/4.0.0/github-markdown.min.css'><link rel='stylesheet' href='https://unpkg.com/highlight.js@10.4.1/styles/github-gist.css'><style>.markdown-body{ padding: 32px }</style><div class='markdown-body'></div>"
+					@load.once="renderMarkdown"
+				/>
+			</div>
+		</template>
+	</split-view>
 </template>
 
 <script>
@@ -65,6 +69,7 @@ import MonacoEditor from './components/MonacoEditor.vue';
 import Spinner from './components/Spinner.vue';
 import TokenInput from './components/TokenInput.vue';
 import UploadDropZone from './components/UploadDropZone.vue';
+import SplitView from 'vue-split-view';
 
 const cache = new LRU({
 	max: 1000,
@@ -76,6 +81,7 @@ export default {
 		Spinner,
 		TokenInput,
 		UploadDropZone,
+		SplitView,
 	},
 
 	data() {
@@ -176,8 +182,14 @@ export default {
 * {
 	box-sizing: border-box;
 }
-body {
+
+html, body {
+	height: 100%;
 	margin: 0;
+}
+
+#app {
+	height: 100%;
 }
 </style>
 
@@ -186,14 +198,9 @@ a {
 	color: inherit;
 }
 
-.app {
-	display: flex;
-	height: 100vh;
-}
-
 .editor {
+	height: 100%;
 	position: relative;
-	width: 50vw;
 	display: flex;
 	flex-direction: column;
 }
@@ -216,7 +223,7 @@ a {
 }
 
 .preview {
-	width: 50vw;
+	height: 100%;
 }
 
 .spinner {

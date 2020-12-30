@@ -31,4 +31,4 @@ jobs:
           git config user.email github-actions@github.com
           git add -A
           git commit -m 'chore: deploy'
-          git push -f git@github.com:privatenumber/litemark.git master:gh-pages
+          git push -f https://privatenumber:${{ secrets.GITHUB_TOKEN }}@github.com/privatenumber/litemark.git master:gh-pages

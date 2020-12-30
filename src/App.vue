@@ -69,7 +69,7 @@ import MonacoEditor from './components/MonacoEditor.vue';
 import Spinner from './components/Spinner.vue';
 import TokenInput from './components/TokenInput.vue';
 import UploadDropZone from './components/UploadDropZone.vue';
-import SplitView from 'vue-split-view/dist/vue3';
+import SplitView from 'vue-split-view';
 
 const cache = new LRU({
 	max: 1000,

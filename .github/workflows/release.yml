@@ -1,0 +1,28 @@
+name: Release
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+      - name: Deploy
+        run: |
+          npm i -g pnpm
+          pnpm i --frozen-lockfile
+          npm run build
+          cd dist
+          git init
+          git add -A
+          git commit -m 'chore: deploy'
+          git push -f git@github.com:privatenumber/litemark.git master:gh-pages

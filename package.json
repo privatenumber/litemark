@@ -21,7 +21,7 @@
 		}
 	},
 	"lint-staged": {
-		"*.js": "xo"
+		"*.js": "eslint"
 	},
 	"dependencies": {
 		"vue": "^3.0.4"
@@ -34,8 +34,7 @@
 		"husky": "^4.3.6",
 		"lint-staged": "^10.5.3",
 		"vite": "^1.0.0-rc.13",
-		"vue-split-view": "^1.0.0",
-		"xo": "^0.36.1"
+		"vue-split-view": "^1.0.0"
 	},
 	"eslintConfig": {
 		"extends": "@pvtnbr/eslint-config-vue",

@@ -1,11 +1,6 @@
 import marked from 'https://cdn.skypack.dev/pin/marked@v1.2.6-VhC1uUH1mBVSJfkyxYzD/min/marked.js';
-import ky from 'https://cdn.skypack.dev/pin/ky@v0.25.1-Vz6hQ384evEQfuYrbaQy/min/ky.js';
+import emojis from 'https://cdn.skypack.dev/pin/gh-emojis@v1.0.0-bskTbS6n1u16gIfhvfbJ/min/gh-emojis.js';
 import highlight from './highlight.js';
-
-let emojis = {};
-const fetchingEmojis = ky('https://api.github.com/emojis').json().then(_emojis => {
-	emojis = _emojis;
-});
 
 const highlightJs2github = [
 	[/hljs-comment/g, 'pl-c'],
@@ -72,11 +67,12 @@ marked.use({
 	},
 });
 
-const markedWrapped = src => new Promise(async (resolve, reject) => { // eslint-disable-line no-async-promise-executor
-	await fetchingEmojis;
-	marked(src, {gfm: true}, (err, result) => {
-		if (err) {
-			return reject(err);
+// eslint-disable-next-line no-async-promise-executor
+const markedWrapped = source => new Promise(async (resolve, reject) => {
+	marked(source, { gfm: true }, (error, result) => {
+		if (error) {
+			reject(error);
+			return;
 		}
 
 		resolve(result);

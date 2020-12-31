@@ -37,17 +37,6 @@
 		"vue-split-view": "^1.0.0"
 	},
 	"eslintConfig": {
-		"extends": "@pvtnbr/eslint-config-vue",
-		"overrides": [
-			{
-				"files": "*.sw.js",
-				"env": {
-					"serviceworker": true
-				},
-				"rules": {
-					"no-restricted-globals": "off"
-				}
-			}
-		]
+		"extends": "@pvtnbr/eslint-config-vue"
 	}
 }

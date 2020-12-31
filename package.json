@@ -9,10 +9,11 @@
 		"name": "Hiroki Osame",
 		"email": "hiroki.osame@gmail.com"
 	},
+	"files": [],
 	"scripts": {
 		"dev": "vite",
 		"build": "vite build",
-		"lint": "xo"
+		"lint": "eslint ."
 	},
 	"husky": {
 		"hooks": {
@@ -26,12 +27,28 @@
 		"vue": "^3.0.4"
 	},
 	"devDependencies": {
+		"@pvtnbr/eslint-config-vue": "^0.1.5",
 		"@vue/compiler-sfc": "^3.0.4",
+		"eslint": "^7.16.0",
 		"eslint-plugin-vue": "^7.2.0",
 		"husky": "^4.3.6",
 		"lint-staged": "^10.5.3",
 		"vite": "^1.0.0-rc.13",
 		"vue-split-view": "^1.0.0",
 		"xo": "^0.36.1"
+	},
+	"eslintConfig": {
+		"extends": "@pvtnbr/eslint-config-vue",
+		"overrides": [
+			{
+				"files": "*.sw.js",
+				"env": {
+					"serviceworker": true
+				},
+				"rules": {
+					"no-restricted-globals": "off"
+				}
+			}
+		]
 	}
 }

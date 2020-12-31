@@ -33,12 +33,12 @@
 							placeholder="GitHub token"
 						/>
 
-						{{ Number(rateLimit.remaining).toLocaleString() }}/{{ Number(rateLimit.limit).toLocaleString() }}
+						{{ formatNumber(rateLimit.remaining) }}/{{ formatNumber(rateLimit.limit) }}
 					</div>
 				</div>
 				<monaco-editor
 					ref="monaco"
-					v-model="state.markdownSrc"
+					v-model="state.markdownSource"
 					language="markdown"
 					theme="vs-dark"
 				/>
@@ -64,12 +64,12 @@
 import pDebounce from 'https://cdn.skypack.dev/pin/p-debounce@v2.1.0-LRRtmDORx9LZe70mcYjZ/min/p-debounce.js';
 import ky from 'https://cdn.skypack.dev/pin/ky@v0.25.1-Vz6hQ384evEQfuYrbaQy/min/ky.js';
 import LRU from 'https://cdn.skypack.dev/pin/lru-cache@v6.0.0-IF3dXOIuVvZ6NoDdLuhR/min/lru-cache.js';
+import SplitView from 'vue-split-view'; // Loads CSS file -- easier to let Vite handle it
 import marked from './lib/marked.js';
 import MonacoEditor from './components/MonacoEditor.vue';
 import Spinner from './components/Spinner.vue';
 import TokenInput from './components/TokenInput.vue';
 import UploadDropZone from './components/UploadDropZone.vue';
-import SplitView from 'vue-split-view';
 
 const cache = new LRU({
 	max: 1000,
@@ -93,7 +93,7 @@ export default {
 				limit: 0,
 			},
 			state: JSON.parse(window.localStorage.getItem('state')) || {
-				markdownSrc: '# 🖋 Welcome to Litemark\nLitemark is a GitHub Flavored Markdown editor.\n\nEdit your markdown on the left for it to be rendered on the right!\n',
+				markdownSource: '# 🖋 Welcome to Litemark\nLitemark is a GitHub Flavored Markdown editor.\n\nEdit your markdown on the left for it to be rendered on the right!\n',
 				useGithubApi: false,
 				githubToken: '',
 			},
@@ -107,7 +107,7 @@ export default {
 	},
 
 	watch: {
-		'state.markdownSrc': 'renderMarkdown',
+		'state.markdownSource': 'renderMarkdown',
 		'state.useGithubApi': 'renderMarkdown',
 		state: {
 			handler(state) {
@@ -122,6 +122,10 @@ export default {
 	},
 
 	methods: {
+		formatNumber(string) {
+			return Number(string).toLocaleString();
+		},
+
 		onDropFile(file) {
 			this.isDragging = false;
 
@@ -131,15 +135,15 @@ export default {
 		},
 
 		async renderMarkdown() {
-			const markdownSrc = this.state.markdownSrc.trim();
-			const cacheKey = this.cachePrefix + markdownSrc;
+			const markdownSource = this.state.markdownSource.trim();
+			const cacheKey = this.cachePrefix + markdownSource;
 
 			let markdownCompiledHtml = cache.get(cacheKey);
 			if (!markdownCompiledHtml) {
 				this.isLoading = true;
-				markdownCompiledHtml = this.state.useGithubApi ?
-					(await this.getGithubMarkdown(markdownSrc)) :
-					(await marked(markdownSrc));
+				markdownCompiledHtml = this.state.useGithubApi
+					? (await this.getGithubMarkdown(markdownSource))
+					: (await marked(markdownSource));
 				this.isLoading = false;
 
 				cache.set(cacheKey, markdownCompiledHtml);
@@ -157,12 +161,13 @@ export default {
 			try {
 				response = await ky.post('https://api.github.com/markdown', {
 					headers: {
-
-						...(this.state.githubToken ? {
-							Authorization: `token ${this.state.githubToken}`,
-						} : {}),
+						...(
+							this.state.githubToken
+								? { Authorization: `token ${this.state.githubToken}` }
+								: {}
+						),
 					},
-					json: {text},
+					json: { text },
 				});
 
 				this.rateLimit.remaining = response.headers.get('x-ratelimit-remaining');
@@ -170,7 +175,8 @@ export default {
 
 				return await response.text();
 			} catch (error) {
-				console.log(error);
+				// eslint-disable-next-line no-console
+				console.warn(error);
 				return `Failed with error: ${error.message}`;
 			}
 		},

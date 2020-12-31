@@ -1,7 +1,7 @@
 <template>
 	<div
 		class="upload-drop-zone"
-		@drop="onDrop"
+		@drop.prevent="onDrop"
 		@dragover.prevent
 	>
 		<div
@@ -16,16 +16,15 @@
 export default {
 	emits: ['drop-file'],
 	methods: {
-		onDrop(ev) {
-			ev.preventDefault();
-
-			if (ev.dataTransfer.items) {
-				for (const item of ev.dataTransfer.items) {
+		onDrop(event) {
+			if (event.dataTransfer.items) {
+				for (const item of event.dataTransfer.items) {
 					const file = item.getAsFile();
 					this.$emit('drop-file', file);
 				}
 			} else {
-				console.log(ev.dataTransfer.files);
+				// eslint-disable-next-line no-console
+				console.log(event.dataTransfer.files);
 			}
 		},
 	},

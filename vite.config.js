@@ -1,8 +1,9 @@
 import vue from '@vitejs/plugin-vue';
 
 const viteConfig = {
-	base: '/litemark',
-	assetsDir: 'assets',
+	build: {
+		base: '/litemark',
+	},
 	plugins: [vue()],
 };
 

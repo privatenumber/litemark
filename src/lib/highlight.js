@@ -24,7 +24,7 @@ async function highlight(lang, code) {
 		lang = langMap[lang];
 	}
 
-	const { default: langModule } = await import(`https://cdn.skypack.dev/highlight.js/lib/languages/${lang}`).catch(() => ({}));
+	const { default: langModule } = await import(/* @vite-ignore */`https://cdn.skypack.dev/highlight.js/lib/languages/${lang}`).catch(() => ({}));
 	if (langModule) {
 		highlightJs.registerLanguage(lang, langModule);
 	} else {

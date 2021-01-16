@@ -28,12 +28,13 @@
 	},
 	"devDependencies": {
 		"@pvtnbr/eslint-config-vue": "^0.1.5",
+		"@vitejs/plugin-vue": "^1.0.6",
 		"@vue/compiler-sfc": "^3.0.4",
 		"eslint": "^7.16.0",
 		"eslint-plugin-vue": "^7.2.0",
 		"husky": "^4.3.6",
 		"lint-staged": "^10.5.3",
-		"vite": "^1.0.0-rc.13",
+		"vite": "^2.0.0-beta.30",
 		"vue-split-view": "^1.0.0"
 	},
 	"eslintConfig": {

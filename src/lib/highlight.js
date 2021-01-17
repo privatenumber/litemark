@@ -1,4 +1,4 @@
-import highlightJs from 'https://cdn.skypack.dev/pin/highlight.js@v10.4.1-oEk2335kfyV8Qqf49vGK/mode=raw,min/lib/core.js';
+import highlightJs from 'skypack://highlight.js/lib/core.js';
 
 const langMap = {
 	js: 'javascript',

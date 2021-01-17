@@ -1,5 +1,5 @@
-import marked from 'https://cdn.skypack.dev/pin/marked@v1.2.6-VhC1uUH1mBVSJfkyxYzD/min/marked.js';
-import emojis from 'https://cdn.skypack.dev/pin/gh-emojis@v1.0.0-bskTbS6n1u16gIfhvfbJ/min/gh-emojis.js';
+import marked from 'skypack://marked';
+import emojis from 'skypack://gh-emojis';
 import highlight from './highlight.js';
 
 const highlightJs2github = [

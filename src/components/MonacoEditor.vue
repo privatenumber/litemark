@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import * as monaco from 'https://cdn.skypack.dev/pin/monaco-editor@v0.21.2-u7UQTXc50XqDQUVFktmh/min/monaco-editor.js';
+import * as monaco from 'skypack://monaco-editor';
 
 if ('serviceWorker' in navigator) {
 	navigator.serviceWorker.register(`${import.meta.env.BASE_URL}monaco-editor-skypack.sw.js`);

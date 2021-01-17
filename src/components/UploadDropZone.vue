@@ -38,7 +38,7 @@ export default {
 	height: 100%;
 	z-index: 1;
 	padding: 32px;
-	opacity: .5;
+	background-color: rgba(0, 0, 0, 0.25);
 }
 
 .dotted-container {
@@ -49,7 +49,6 @@ export default {
 	height: 100%;
 	border: 8px dashed #fff;
 	border-radius: 32px;
-	background-color: rgba(255, 255, 255, 0.1);
 
 	color: #fff;
 	font-family: system-ui;

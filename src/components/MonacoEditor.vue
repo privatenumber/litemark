@@ -68,17 +68,8 @@ export default {
 		insertToCaret(text) {
 			const { editor } = this;
 
-			let range;
-			if (editor.hasTextFocus()) {
-				range = editor.getSelection();
-			} else {
-				const line = editor.getModel().getLineCount() + 1;
-				const column = 1;
-				range = new monaco.Range(line, column, line, column);
-			}
-
 			editor.executeEdits('', [{
-				range,
+				range: editor.getSelection(),
 				text,
 				forceMoveMarkers: true,
 			}]);

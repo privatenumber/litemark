@@ -1,7 +1,8 @@
-import highlightJs from 'skypack://highlight.js/lib/core.js';
+import highlightJs from 'highlight.js/lib/core.js';
 
 const langMap = {
 	js: 'javascript',
+	ts: 'typescript',
 	html: 'xml',
 	xhtml: 'xml',
 	rss: 'xml',
@@ -13,6 +14,17 @@ const langMap = {
 	wsf: 'xml',
 	svg: 'xml',
 	vue: 'xml',
+	sh: 'bash',
+};
+
+const languages = {
+	javascript: () => import('highlight.js/lib/languages/javascript.js'),
+	typescript: () => import('highlight.js/lib/languages/typescript.js'),
+	yaml: () => import('highlight.js/lib/languages/yaml.js'),
+	json: () => import('highlight.js/lib/languages/json.js'),
+	xml: () => import('highlight.js/lib/languages/xml.js'),
+	diff: () => import('highlight.js/lib/languages/diff.js'),
+	bash: () => import('highlight.js/lib/languages/bash.js'),
 };
 
 async function highlight(lang, code) {
@@ -24,7 +36,12 @@ async function highlight(lang, code) {
 		lang = langMap[lang];
 	}
 
-	const { default: langModule } = await import(/* @vite-ignore */`https://cdn.skypack.dev/highlight.js/lib/languages/${lang}`).catch(() => ({}));
+	if (!languages[lang]) {
+		return code;
+	}
+
+	const { default: langModule } = await languages[lang]();
+
 	if (langModule) {
 		highlightJs.registerLanguage(lang, langModule);
 	} else {

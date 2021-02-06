@@ -6,11 +6,7 @@
 </template>
 
 <script>
-import * as monaco from 'skypack://monaco-editor';
-
-if ('serviceWorker' in navigator) {
-	navigator.serviceWorker.register(`${import.meta.env.BASE_URL}monaco-editor-skypack.sw.js`);
-}
+import * as monaco from 'monaco-editor/esm/vs/editor/editor.main.js';
 
 export default {
 	props: {
@@ -33,15 +29,6 @@ export default {
 	emits: ['update:modelValue'],
 
 	mounted() {
-		window.MonacoEnvironment = {
-			baseUrl: 'https://unpkg.com/monaco-editor@0.21.2/min/',
-			getWorkerUrl() {
-				return `data:text/javascript;charset=utf-8,${encodeURIComponent(`
-					importScripts('https://unpkg.com/monaco-editor@0.21.2/min/vs/base/worker/workerMain.js');
-				`)}`;
-			},
-		};
-
 		this.initMonaco();
 	},
 

@@ -61,9 +61,9 @@
 </template>
 
 <script>
-import pDebounce from 'skypack://p-debounce';
-import ky from 'skypack://ky';
-import LRU from 'skypack://lru-cache';
+import pDebounce from 'p-debounce';
+import ky from 'ky';
+import LRU from 'lru-cache';
 import SplitView from 'vue-split-view'; // Loads CSS file -- easier to let Vite handle it
 import marked from './lib/marked.js';
 import MonacoEditor from './components/MonacoEditor.vue';

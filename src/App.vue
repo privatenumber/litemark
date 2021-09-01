@@ -52,7 +52,7 @@
 				/>
 				<iframe
 					ref="previewFrame"
-					srcdoc="<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/4.0.0/github-markdown.min.css'><link rel='stylesheet' href='https://unpkg.com/highlight.js@10.4.1/styles/github-gist.css'><style>.markdown-body{ padding: 32px }</style><div class='markdown-body'></div>"
+					srcdoc="<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/4.0.0/github-markdown.min.css'><link rel='stylesheet' href='https://unpkg.com/highlight.js@10.4.1/styles/github-gist.css'><base target='_blank'><style>.markdown-body{ padding: 32px }</style><div class='markdown-body'></div>"
 					@load.once="renderMarkdown"
 				/>
 			</div>
